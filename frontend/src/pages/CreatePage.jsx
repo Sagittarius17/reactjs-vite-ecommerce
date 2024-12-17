@@ -2,6 +2,7 @@ import { Button, Container, Heading, Input, VStack, Box } from '@chakra-ui/react
 import React, { useState } from 'react'
 import { useProductStore } from '../store/product'
 import { Toaster, toaster } from "../components/ui/toaster"
+import { useNavigate } from 'react-router-dom';
 
 const CreatePage = () => {
     const [newProduct, setNewProduct] = useState({
@@ -11,6 +12,7 @@ const CreatePage = () => {
     })
 
     const { createProduct } = useProductStore()
+    const navigate = useNavigate();
 
     const handleAddProduct = async () => {
         const { success, message } = await createProduct(newProduct)
@@ -18,19 +20,12 @@ const CreatePage = () => {
             toaster.error({
                 title: "Someting went wrong",
                 description: "File not created.",
-                // action: {
-                //     label: "Undo",
-                //     onClick: () => console.log("Undo"),
-                // },
             })
         } else {
+            navigate('/');
             toaster.success({
                 title: "Done",
                 description: "File created successfully.",
-                // action: {
-                //     label: "Undo",
-                //     onClick: () => console.log("Undo"),
-                // },
             })
         }
 

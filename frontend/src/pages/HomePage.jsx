@@ -26,7 +26,6 @@ const HomePage = () => {
                         </Link>
                     </Text>
                 ) : (
-
                     <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={10} w={'full'}>
                         {products.map((product) => (
                             <ProductCard key={product._id} product={product} />
