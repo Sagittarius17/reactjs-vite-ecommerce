@@ -1,33 +1,36 @@
-import express, { request, response } from "express";
-import { PORT, MONGO_URI } from "./config/db.js";
+import express from "express";
+import { PORT, MONGO_URI } from "./db.js";
 import mongoose from "mongoose";
 import cors from "cors";
 import productRoutes from './routes/product.js'
+import path from 'path'
+import dotenv from "dotenv";
 
 const app = express();
-
+dotenv.config();
 // middleware for parsing request body
 app.use(express.json());
 
 // middleware for handeling CORS
-
-//option 1
 app.use(cors());
 
-//option 2
-// app.use(cors({
-//     origin: 'http://localhost:3000',
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//     allowHeaders: ['Content-Type'],
-// })
-// )
+const __dirname = path.resolve();
+
 app.use('/api/products', productRoutes)
+
+if(process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "/frontend/dist")))
+
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"))
+    })
+}
 mongoose
     .connect(MONGO_URI)
     .then(() => {
         console.log("app connected to database");
         app.listen(PORT, () => {
-            console.log(`App is running on port: ${PORT}`);
+            console.log(`App is live on http://localhost:${PORT}`);
         });
     })
     .catch((error) => {
