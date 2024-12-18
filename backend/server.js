@@ -1,5 +1,4 @@
 import express from "express";
-import { PORT, MONGO_URI } from "./db.js";
 import mongoose from "mongoose";
 import cors from "cors";
 import productRoutes from './routes/product.js'
