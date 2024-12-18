@@ -5,6 +5,8 @@ import productRoutes from './routes/product.js'
 import path from 'path'
 import dotenv from "dotenv";
 
+const PORT = process.env.PORT || 5000;
+
 const app = express();
 dotenv.config();
 // middleware for parsing request body
@@ -25,7 +27,7 @@ if(process.env.NODE_ENV === "production") {
     })
 }
 mongoose
-    .connect(MONGO_URI)
+    .connect(process.env.MONGO_URI)
     .then(() => {
         console.log("app connected to database");
         app.listen(PORT, () => {
